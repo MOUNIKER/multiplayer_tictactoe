@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "805174990201",
+    "firebase_url": "https://multiplayer-tictactoe-c4744-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "multiplayer-tictactoe-c4744",
+    "storage_bucket": "multiplayer-tictactoe-c4744.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805174990201:android:ae3b5d7c34fae808734ba8",
+        "android_client_info": {
+          "package_name": "com.example.multiplayer_tictactoe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805174990201-a58d7gj4gqr9ieoctuc8suc9t3t0ag0q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.multiplayer_tictactoe",
+            "certificate_hash": "e87fb417e088a2c19304a156238564a89d2f79f7"
+          }
+        },
+        {
+          "client_id": "805174990201-dccuq5nd40klhr7m4mgkfu99j9e16t1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH1Ka7Epyz4QJ2b7pz7pOss7Hj4bTwikM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805174990201-dccuq5nd40klhr7m4mgkfu99j9e16t1t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "805174990201-tmdt4fbqva56a9ncc6e2uj5ehgi7fci6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.multiplayerTictactoe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
