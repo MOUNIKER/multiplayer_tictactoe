@@ -3,7 +3,7 @@ import '../../models/game_model.dart';
 
 class CellWidget extends StatefulWidget {
   final CellValue value;
-  const CellWidget({Key? key, required this.value}) : super(key: key);
+  const CellWidget({super.key, required this.value});
 
   @override
   State<CellWidget> createState() => _CellWidgetState();
