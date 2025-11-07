@@ -80,16 +80,12 @@ class RealtimeDbService {
 
     for (final c in snap.children) {
       final map = Map<String, dynamic>.from(c.value as Map);
+      map['uid'] = c.key; // ✅ Include UID for identification
 
-      // ✅ Ensure missing fields default to 0
+      // Defaults
       final wins = map['wins'] as int? ?? 0;
-      final losses = map['losses'] as int? ?? 0;
       final draws = map['draws'] as int? ?? 0;
-
-      // ✅ Recalculate total if it doesn't exist
-      map['total'] = map['total'] ?? (wins + draws);
-
-      // ✅ Ensure displayName exists
+      map['total'] = wins;
       map['displayName'] = map['displayName'] ?? 'Anonymous';
 
       out.add(map);
@@ -99,5 +95,27 @@ class RealtimeDbService {
     out.sort((a, b) => (b['total'] as int).compareTo(a['total'] as int));
 
     return out;
+  }
+
+  Stream<List<Map<String, dynamic>>> scoresStream() {
+    return _db.ref(DBPaths.scores).onValue.map((event) {
+      final data = event.snapshot.value;
+      if (data == null) return [];
+
+      final out = <Map<String, dynamic>>[];
+      final map = Map<dynamic, dynamic>.from(data as Map);
+
+      map.forEach((key, value) {
+        final user = Map<String, dynamic>.from(value as Map);
+        user['uid'] = key;
+        final wins = user['wins'] as int? ?? 0;
+        user['total'] = wins; // ✅ only wins count
+        user['displayName'] = user['displayName'] ?? 'Anonymous';
+        out.add(user);
+      });
+
+      out.sort((a, b) => (b['total'] as int).compareTo(a['total'] as int));
+      return out;
+    });
   }
 }

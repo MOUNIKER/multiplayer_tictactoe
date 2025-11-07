@@ -1,18 +1,26 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../repositories/leaderboard_repository.dart';
 
 class LeaderboardViewModel extends StateNotifier<AsyncValue<List<Map<String, dynamic>>>> {
   final LeaderboardRepository _repo;
+  StreamSubscription? _sub;
+
   LeaderboardViewModel(this._repo) : super(const AsyncValue.loading()) {
-    fetchTop();
+    _listenLeaderboard();
   }
 
-  Future<void> fetchTop({int limit = 20}) async {
-    try {
-      final list = await _repo.fetchTopLeaders(limit);
-      state = AsyncValue.data(list);
-    } catch (e, st) {
+  void _listenLeaderboard() {
+    _sub = _repo.leaderboardStream().listen((data) {
+      state = AsyncValue.data(data);
+    }, onError: (e, st) {
       state = AsyncValue.error(e, st);
-    }
+    });
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
   }
 }

@@ -69,62 +69,58 @@ class GameViewModel extends StateNotifier<AsyncValue<GameModel?>> {
   }
 
   Future<void> _updateScores(GameModel finalState) async {
-    // simplistic scoring: win +1, loss 0, draw +0
-    // fetch, update and write to DB via score repo
     if (finalState.winner == null) return;
-    if (finalState.winner == 'draw') {
-      // increment draws for both
-      await _incrementDraw(finalState.playerX);
-      await _incrementDraw(finalState.playerO);
+
+    final winner = finalState.winner!;
+    final playerX = finalState.playerX;
+    final playerO = finalState.playerO;
+
+    if (winner == 'draw') {
+      await _incrementDraw(playerX);
+      await _incrementDraw(playerO);
     } else {
-      final winner = finalState.winner!;
-      final loser = (winner == finalState.playerX)
-          ? finalState.playerO
-          : finalState.playerX;
+      final loser = (winner == playerX) ? playerO : playerX;
       await _incrementWin(winner);
       await _incrementLoss(loser);
     }
   }
 
-  Future<void> _incrementLoss(String uid) async {
-    final map = await _scoreRepo.getScore(uid) ?? {};
-    final losses = (map['losses'] as int? ?? 0) + 1;
-    final wins = map['wins'] as int? ?? 0;
-    final draws = map['draws'] as int? ?? 0;
+  Future<void> _incrementWin(String uid) async {
+    final existing = await _scoreRepo.getScore(uid) ?? {};
+    final wins = (existing['wins'] as int? ?? 0) + 1;
+    final losses = existing['losses'] as int? ?? 0;
+    final draws = existing['draws'] as int? ?? 0;
 
     await _scoreRepo.updateScore(uid, {
       'wins': wins,
       'losses': losses,
       'draws': draws,
-      'total': wins + draws,
     });
   }
 
-  Future<void> _incrementWin(String uid) async {
-    final map = await _scoreRepo.getScore(uid) ?? {};
-    final wins = (map['wins'] as int? ?? 0) + 1;
-    final losses = map['losses'] as int? ?? 0;
-    final draws = map['draws'] as int? ?? 0;
+  Future<void> _incrementLoss(String uid) async {
+    final existing = await _scoreRepo.getScore(uid) ?? {};
+    final losses = (existing['losses'] as int? ?? 0) + 1;
+    final wins = existing['wins'] as int? ?? 0;
+    final draws = existing['draws'] as int? ?? 0;
 
     await _scoreRepo.updateScore(uid, {
       'wins': wins,
       'losses': losses,
       'draws': draws,
-      'total': wins + draws,
     });
   }
 
   Future<void> _incrementDraw(String uid) async {
-    final map = await _scoreRepo.getScore(uid) ?? {};
-    final draws = (map['draws'] as int? ?? 0) + 1;
-    final wins = map['wins'] as int? ?? 0;
-    final losses = map['losses'] as int? ?? 0;
+    final existing = await _scoreRepo.getScore(uid) ?? {};
+    final draws = (existing['draws'] as int? ?? 0) + 1;
+    final wins = existing['wins'] as int? ?? 0;
+    final losses = existing['losses'] as int? ?? 0;
 
     await _scoreRepo.updateScore(uid, {
       'wins': wins,
       'losses': losses,
       'draws': draws,
-      'total': wins + draws,
     });
   }
 

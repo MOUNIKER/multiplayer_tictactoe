@@ -20,6 +20,7 @@ class TicTacToeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Multiplayer Tic-Tac-Toe',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
         useMaterial3: true,
