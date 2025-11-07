@@ -55,11 +55,29 @@ class _GameScreenState extends ConsumerState<GameScreen> {
   Widget build(BuildContext context) {
     final gmState = ref.watch(gameViewModelProvider(roomId));
     return Scaffold(
-      appBar: AppBar(title: const Text('Game')),
+      appBar: AppBar(title: const Text('Game'), centerTitle: true),
       body: gmState.when(
         data: (model) {
           if (model == null) {
-            return const Center(child: Text('Waiting for game to start...'));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Room ID: ${roomId.substring(0, 6)}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Waiting for game to start...',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            );
           }
 
           final auth = ref.read(authViewModelProvider).asData?.value;
@@ -76,7 +94,6 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               String winnerEmail = '';
               String status = '';
 
-              // Determine whose UID matches the winner
               if (model.finished) {
                 if (model.winner == 'draw') {
                   status = 'Draw';
@@ -99,6 +116,14 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Text(
+                      'Room ID: ${roomId.substring(0, 6)}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     Text(
                       status,
                       style: Theme.of(context).textTheme.titleMedium,
