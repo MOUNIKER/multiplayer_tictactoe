@@ -52,7 +52,6 @@ class LoginScreen extends ConsumerWidget {
                 OutlinedButton(
                   child: const Text('Continue with Email'),
                   onPressed: () {
-                    // quick demo registration/login flow — for real app create form
                     _showEmailDialog(context, ref);
                   },
                 ),
@@ -102,7 +101,7 @@ void _showEmailDialog(BuildContext ctx, WidgetRef ref) {
           ],
         ),
         actions: [
-          // ✅ LOGIN BUTTON
+          //  LOGIN BUTTON
           ElevatedButton(
             onPressed: () async {
               final email = emailCtrl.text.trim();
@@ -116,7 +115,7 @@ void _showEmailDialog(BuildContext ctx, WidgetRef ref) {
             child: const Text('Login'),
           ),
 
-          // ✅ REGISTER BUTTON
+          //  REGISTER BUTTON
           ElevatedButton(
             onPressed: () async {
               final name = nameCtrl.text.trim();

@@ -9,32 +9,51 @@ class FirebaseAuthService {
   Stream<AppUser?> authStateChanges() {
     return _auth.authStateChanges().map((user) {
       if (user == null) return null;
-      return AppUser(uid: user.uid, displayName: user.displayName, email: user.email, photoUrl: user.photoURL);
+      return AppUser(
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoUrl: user.photoURL,
+      );
     });
   }
 
   Future<AppUser?> signInWithEmail(String email, String password) async {
-    final cred = await _auth.signInWithEmailAndPassword(email: email, password: password);
+    final cred = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
     final u = cred.user!;
-    return AppUser(uid: u.uid, displayName: u.displayName, email: u.email, photoUrl: u.photoURL);
+    return AppUser(
+      uid: u.uid,
+      displayName: u.displayName,
+      email: u.email,
+      photoUrl: u.photoURL,
+    );
   }
 
-Future<AppUser?> registerWithEmail(String email, String password, String displayName) async {
-  final cred = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<AppUser?> registerWithEmail(
+    String email,
+    String password,
+    String displayName,
+  ) async {
+    final cred = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-  await cred.user!.updateDisplayName(displayName);
-  await cred.user!.reload();    // ✅ REQUIRED FIX
+    await cred.user!.updateDisplayName(displayName);
+    await cred.user!.reload(); // ✅ REQUIRED FIX
 
-  final user = _auth.currentUser!;
+    final user = _auth.currentUser!;
 
-  return AppUser(
-    uid: user.uid,
-    displayName: user.displayName,
-    email: user.email,
-    photoUrl: user.photoURL,
-  );
-}
-
+    return AppUser(
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      photoUrl: user.photoURL,
+    );
+  }
 
   Future<AppUser?> signInWithGoogle() async {
     final googleUser = await GoogleSignIn().signIn();
@@ -47,29 +66,34 @@ Future<AppUser?> registerWithEmail(String email, String password, String display
     );
     final userCred = await _auth.signInWithCredential(credential);
     final u = userCred.user!;
-    return AppUser(uid: u.uid, displayName: u.displayName, email: u.email, photoUrl: u.photoURL);
+    return AppUser(
+      uid: u.uid,
+      displayName: u.displayName,
+      email: u.email,
+      photoUrl: u.photoURL,
+    );
   }
 
- Future<AppUser?> signInWithFacebook() async {
-  final LoginResult result = await FacebookAuth.instance.login();
+  Future<AppUser?> signInWithFacebook() async {
+    final LoginResult result = await FacebookAuth.instance.login();
 
-  if (result.status != LoginStatus.success) return null;
+    if (result.status != LoginStatus.success) return null;
 
-  final AccessToken accessToken = result.accessToken!;
-  final OAuthCredential credential =
-      FacebookAuthProvider.credential(accessToken.tokenString);
+    final AccessToken accessToken = result.accessToken!;
+    final OAuthCredential credential = FacebookAuthProvider.credential(
+      accessToken.tokenString,
+    );
 
-  final userCred = await _auth.signInWithCredential(credential);
-  final u = userCred.user!;
+    final userCred = await _auth.signInWithCredential(credential);
+    final u = userCred.user!;
 
-  return AppUser(
-    uid: u.uid,
-    displayName: u.displayName,
-    email: u.email,
-    photoUrl: u.photoURL,
-  );
-}
-
+    return AppUser(
+      uid: u.uid,
+      displayName: u.displayName,
+      email: u.email,
+      photoUrl: u.photoURL,
+    );
+  }
 
   Future<void> signOut() => _auth.signOut();
 }

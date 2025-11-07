@@ -21,7 +21,11 @@ class GameModel extends Equatable {
     this.winner,
   });
 
-  factory GameModel.newGame({required String roomId, required String playerX, required String playerO}) {
+  factory GameModel.newGame({
+    required String roomId,
+    required String playerX,
+    required String playerO,
+  }) {
     return GameModel(
       board: List.filled(9, CellValue.empty),
       roomId: roomId,
@@ -63,10 +67,12 @@ class GameModel extends Equatable {
   }
 
   factory GameModel.fromMap(Map<dynamic, dynamic> map) {
-    final boardList = (map['board'] as List<dynamic>).map((i) {
-      final idx = i as int;
-      return CellValue.values[idx];
-    }).toList(growable: false);
+    final boardList = (map['board'] as List<dynamic>)
+        .map((i) {
+          final idx = i as int;
+          return CellValue.values[idx];
+        })
+        .toList(growable: false);
 
     return GameModel(
       board: boardList,
@@ -80,5 +86,13 @@ class GameModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [board, roomId, playerX, playerO, currentTurn, finished, winner];
+  List<Object?> get props => [
+    board,
+    roomId,
+    playerX,
+    playerO,
+    currentTurn,
+    finished,
+    winner,
+  ];
 }

@@ -14,11 +14,11 @@ class RoomModel extends Equatable {
   });
 
   Map<String, dynamic> toMap() => {
-        'roomId': roomId,
-        'hostUid': hostUid,
-        'guestUid': guestUid,
-        'isOpen': isOpen,
-      };
+    'roomId': roomId,
+    'hostUid': hostUid,
+    'guestUid': guestUid,
+    'isOpen': isOpen,
+  };
 
   factory RoomModel.fromMap(Map<dynamic, dynamic> m) {
     return RoomModel(
@@ -30,7 +30,12 @@ class RoomModel extends Equatable {
   }
 
   RoomModel copyWith({String? guestUid, bool? isOpen}) {
-    return RoomModel(roomId: roomId, hostUid: hostUid, guestUid: guestUid ?? this.guestUid, isOpen: isOpen ?? this.isOpen);
+    return RoomModel(
+      roomId: roomId,
+      hostUid: hostUid,
+      guestUid: guestUid ?? this.guestUid,
+      isOpen: isOpen ?? this.isOpen,
+    );
   }
 
   @override

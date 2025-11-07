@@ -80,7 +80,7 @@ class RealtimeDbService {
 
     for (final c in snap.children) {
       final map = Map<String, dynamic>.from(c.value as Map);
-      map['uid'] = c.key; // ✅ Include UID for identification
+      map['uid'] = c.key; // Include UID for identification
 
       // Defaults
       final wins = map['wins'] as int? ?? 0;
@@ -91,7 +91,7 @@ class RealtimeDbService {
       out.add(map);
     }
 
-    // ✅ Sort high → low
+    // Sort high → low
     out.sort((a, b) => (b['total'] as int).compareTo(a['total'] as int));
 
     return out;
@@ -109,7 +109,7 @@ class RealtimeDbService {
         final user = Map<String, dynamic>.from(value as Map);
         user['uid'] = key;
         final wins = user['wins'] as int? ?? 0;
-        user['total'] = wins; // ✅ only wins count
+        user['total'] = wins; // only wins count
         user['displayName'] = user['displayName'] ?? 'Anonymous';
         out.add(user);
       });

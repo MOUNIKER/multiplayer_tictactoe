@@ -15,13 +15,13 @@ class ScoreModel {
   }) : total = wins * 3 + draws;
 
   Map<String, dynamic> toMap() => {
-        'uid': uid,
-        'displayName': displayName,
-        'wins': wins,
-        'losses': losses,
-        'draws': draws,
-        'total': total,
-      };
+    'uid': uid,
+    'displayName': displayName,
+    'wins': wins,
+    'losses': losses,
+    'draws': draws,
+    'total': total,
+  };
 
   factory ScoreModel.fromMap(Map<dynamic, dynamic> m) {
     return ScoreModel(
