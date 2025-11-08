@@ -70,76 +70,79 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-void _showEmailDialog(BuildContext ctx, WidgetRef ref) {
-  final emailCtrl = TextEditingController();
-  final passCtrl = TextEditingController();
-  final nameCtrl = TextEditingController();
+  void _showEmailDialog(BuildContext ctx, WidgetRef ref) {
+    final emailCtrl = TextEditingController();
+    final passCtrl = TextEditingController();
+    final nameCtrl = TextEditingController();
 
-  showDialog(
-    context: ctx,
-    builder: (_) {
-      return AlertDialog(
-        title: const Text('Email Login / Register'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: nameCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Display name (required for register)',
+    showDialog(
+      context: ctx,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('Email Login / Register'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameCtrl,
+                decoration: const InputDecoration(
+                  labelText: 'Display name (required for register)',
+                ),
               ),
+              TextField(
+                controller: emailCtrl,
+                decoration: const InputDecoration(labelText: 'Email'),
+              ),
+              TextField(
+                controller: passCtrl,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Password'),
+              ),
+            ],
+          ),
+          actions: [
+            //  LOGIN BUTTON
+            ElevatedButton(
+              onPressed: () async {
+                final email = emailCtrl.text.trim();
+                final pass = passCtrl.text.trim();
+
+                await ref
+                    .read(authViewModelProvider.notifier)
+                    .signInWithEmail(email, pass);
+
+                Navigator.pop(ctx);
+              },
+              child: const Text('Login'),
             ),
-            TextField(
-              controller: emailCtrl,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: passCtrl,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
+
+            //  REGISTER BUTTON
+            ElevatedButton(
+              onPressed: () async {
+                final name = nameCtrl.text.trim();
+                final email = emailCtrl.text.trim();
+                final pass = passCtrl.text.trim();
+
+                if (name.isEmpty) {
+                  ScaffoldMessenger.of(ctx).showSnackBar(
+                    const SnackBar(
+                      content: Text('Display name is required to register'),
+                    ),
+                  );
+                  return;
+                }
+
+                await ref
+                    .read(authViewModelProvider.notifier)
+                    .registerWithEmail(email, pass, name);
+
+                Navigator.pop(ctx);
+              },
+              child: const Text('Register'),
             ),
           ],
-        ),
-        actions: [
-          //  LOGIN BUTTON
-          ElevatedButton(
-            onPressed: () async {
-              final email = emailCtrl.text.trim();
-              final pass = passCtrl.text.trim();
-
-              await ref.read(authViewModelProvider.notifier)
-                  .signInWithEmail(email, pass);
-
-              Navigator.pop(ctx);
-            },
-            child: const Text('Login'),
-          ),
-
-          //  REGISTER BUTTON
-          ElevatedButton(
-            onPressed: () async {
-              final name = nameCtrl.text.trim();
-              final email = emailCtrl.text.trim();
-              final pass = passCtrl.text.trim();
-
-              if (name.isEmpty) {
-                ScaffoldMessenger.of(ctx).showSnackBar(
-                  const SnackBar(content: Text('Display name is required to register')),
-                );
-                return;
-              }
-
-              await ref.read(authViewModelProvider.notifier)
-                  .registerWithEmail(email, pass, name);
-
-              Navigator.pop(ctx);
-            },
-            child: const Text('Register'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
+        );
+      },
+    );
+  }
 }

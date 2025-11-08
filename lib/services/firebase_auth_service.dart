@@ -43,7 +43,7 @@ class FirebaseAuthService {
     );
 
     await cred.user!.updateDisplayName(displayName);
-    await cred.user!.reload(); // ✅ REQUIRED FIX
+    await cred.user!.reload();
 
     final user = _auth.currentUser!;
 
